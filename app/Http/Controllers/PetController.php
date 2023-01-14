@@ -28,19 +28,26 @@ class PetController extends Controller
 
 
         $pet = Pet::firstOrNew([
-            'id' => $request('id')
-        ])->first();
+            'id' => $request->input('id')
+        ]);
         $pet->name = $request->input('name');
 
         if ($request->has('photo')) {
             $photo = $request->file('photo');
             $extension = $photo->extension();
-            $count = Pet::all()->count();
-            $count += 1;    // Required for make each photo file name different
+
+            // Required for make each photo file name different
+            if ($request->has('id')) {
+                $count = $request->input('id');
+            } else {
+                $count = Pet::all()->count();
+                $count += 1;
+            }
+
             $photoFilename = 
-                "$count-$request->input('name').$extension";
+                "$count-$pet->name.$extension";
             $pet->photo_filename = $photoFilename;
-            Storage::putFileAs('', $photo, $photoFilename);
+            Storage::putFileAs('pets/', $photo, $photoFilename);
         }
 
         $pet->save();
@@ -80,9 +87,12 @@ class PetController extends Controller
      */
     public function delete ($id)
     {
-        Pet::where(
+        $pet = Pet::where(
             'id', $id
-        )->delete();
+        )->first();
+
+        Storage::delete("pets/$pet->photo_filename");
+        $pet->delete();
 
         return response()->json([
             'success' => true,

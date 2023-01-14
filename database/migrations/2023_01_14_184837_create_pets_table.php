@@ -16,7 +16,7 @@ class CreatePetsTable extends Migration
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
             $table->string('name', 20);
-            $table->string('photo_filename', 50)->unique();
+            $table->string('photo_filename', 50)->nullable()->unique();
             $table->boolean('inside_house')->default(1);    // To know if the pet is or not into the house
             $table->timestamps();
         });
