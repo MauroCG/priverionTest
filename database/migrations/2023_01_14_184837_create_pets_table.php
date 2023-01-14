@@ -17,7 +17,7 @@ class CreatePetsTable extends Migration
             $table->id();
             $table->string('name', 20);
             $table->string('photo_filename', 50)->unique();
-            $table->boolean('inside_house');    // To know if the pet is or not into the house
+            $table->boolean('inside_house')->default(1);    // To know if the pet is or not into the house
             $table->timestamps();
         });
     }
