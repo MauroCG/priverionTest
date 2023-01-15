@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('pet', [PetController::class, 'newOrUpdate']);
 Route::get('pet/{id?}', [PetController::class, 'get']);
 Route::delete('pet/{id}', [PetController::class, 'delete']);
+Route::get('photo/{photo_filename}', [PetController::class, 'getImage']);

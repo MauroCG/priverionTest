@@ -74,10 +74,24 @@ class PetController extends Controller
             $pets = Pet::all();
         }
 
+        foreach ($pets as $pet) { // Simulating file server url -using node http-serverin the pets folder toserve files
+            if ($pet->photo_filename) {
+                $pet->photo = "http://127.0.0.1:8080/$pet->photo_filename";
+            }
+        }
+
         return response()->json([
             'success' => true,
             'pets' => $pets
         ]);
+    }
+
+    /**
+     * Mehtod ussed to get a pet image
+     */
+    public function getImage ($photo_filename)
+    {
+        //return response()->file();
     }
 
     /**
